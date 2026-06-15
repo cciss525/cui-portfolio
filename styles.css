@@ -1252,7 +1252,8 @@ h1 {
   }
 
   .twin-stage {
-    min-height: 300px;
+    height: 340px;
+    min-height: 0;
     order: -1;
   }
 

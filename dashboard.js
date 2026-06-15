@@ -41,6 +41,12 @@ function initDashboard() {
   const sceneState = createFactoryScene(canvas, devices);
   let selectedIndex = 4;
   let history = createHistory();
+  let cycleStep = 0;
+
+  // 每台设备在 6 拍循环中的相位偏移，让各设备状态变化不同步
+  const devicePhase = devices.map((_, i) => i * 2);
+  // 6 拍循环: running(0) → running(1) → idle(2) → running(3) → alarm(4) → running(5)
+  const CYCLE = ["running", "running", "idle", "running", "alarm", "running"];
 
   // Reserved integration point:
   // Replace this simulated updater with WebSocket / MQTT / REST data later.
@@ -48,10 +54,11 @@ function initDashboard() {
   function updateFromRealtimeSource({ rotateDevice = false } = {}) {
     if (rotateDevice) {
       selectedIndex = (selectedIndex + 1) % devices.length;
+      cycleStep = (cycleStep + 1) % CYCLE.length;
     }
 
     const selected = devices[selectedIndex];
-    const snapshot = createMockSnapshot(devices, selected, history);
+    const snapshot = createMockSnapshot(devices, selected, history, cycleStep);
     history = snapshot.history;
     updateHeader();
     updateDeviceInfo(selected, snapshot);
@@ -351,7 +358,7 @@ function createHistory() {
   };
 }
 
-function createMockSnapshot(devices, selected, history) {
+function createMockSnapshot(devices, selected, history, cycleStep) {
   const stateColors = {
     running: 0x35d08f,
     idle: 0xf0b84f,
@@ -359,8 +366,9 @@ function createMockSnapshot(devices, selected, history) {
   };
 
   const states = devices.reduce((acc, device, index) => {
-    const roll = Math.random() + index * 0.02;
-    const status = roll > 0.9 ? "alarm" : roll > 0.74 ? "idle" : "running";
+    // 每台设备按相位偏移从循环表中取状态，有规律地轮换
+    const phaseIndex = ((cycleStep + devicePhase[index]) % CYCLE.length + CYCLE.length) % CYCLE.length;
+    const status = CYCLE[phaseIndex];
     acc[device.id] = {
       status,
       color: stateColors[status],

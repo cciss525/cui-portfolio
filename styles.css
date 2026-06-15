@@ -799,6 +799,17 @@ h1 {
   line-height: 1.72;
 }
 
+.skill-tags {
+  margin-top: 20px;
+}
+
+.skill-tags span {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--subtle);
+  font-weight: 600;
+}
+
 .outlook-section {
   color: #ffffff;
   background: #0f141c;

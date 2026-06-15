@@ -374,6 +374,33 @@ h1 {
   background: var(--subtle);
 }
 
+.education-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: min(var(--max), 100%);
+  margin: 18px auto 0;
+  padding: 18px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.edu-school {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.edu-divider {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
 .focus-layout {
   display: grid;
   grid-template-columns: 280px 1fr;

@@ -58,7 +58,7 @@ function initDashboard() {
     }
 
     const selected = devices[selectedIndex];
-    const snapshot = createMockSnapshot(devices, selected, history, cycleStep);
+    const snapshot = createMockSnapshot(devices, selected, history, cycleStep, devicePhase, CYCLE);
     history = snapshot.history;
     updateHeader();
     updateDeviceInfo(selected, snapshot);
@@ -358,7 +358,7 @@ function createHistory() {
   };
 }
 
-function createMockSnapshot(devices, selected, history, cycleStep) {
+function createMockSnapshot(devices, selected, history, cycleStep, devicePhase, CYCLE) {
   const stateColors = {
     running: 0x35d08f,
     idle: 0xf0b84f,

@@ -119,7 +119,7 @@ function createFactoryScene(canvas, devices) {
   createFactoryShell(root);
   const { products } = createProductionLine(root);
   createDevices(root, devices, selectable);
-  createDataLinks(root);
+  // createDataLinks(root); // 已移除：机床到传送带的竖线
 
   function resize() {
     const rect = canvas.getBoundingClientRect();

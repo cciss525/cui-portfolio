@@ -1067,10 +1067,6 @@ h1 {
   transform: translateY(0);
 }
 
-.hero-mobile-avatar {
-  display: none;
-}
-
 @media (max-width: 980px) {
   .site-header {
     width: calc(100% - 24px);
@@ -1092,27 +1088,18 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* 移动端照片：去掉绝对定位，居中展示 */
   .hero-profile-card {
-    display: none;
+    position: relative;
+    right: auto;
+    top: auto;
+    width: min(360px, 90%);
+    margin: 0 auto 20px;
+    order: -1;
   }
 
-  .hero-mobile-avatar {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 28px;
-    padding: 16px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .hero-mobile-avatar img {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+  .portrait-frame {
+    height: 260px;
   }
 
   .focus-layout,
@@ -1210,20 +1197,9 @@ h1 {
     font-size: 12px;
   }
 
-  .hero-mobile-avatar {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 24px;
-    padding: 14px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .hero-mobile-avatar img {
-    width: 48px;
-    height: 48px;
+  /* 小屏照片进一步缩小 */
+  .portrait-frame {
+    height: 220px;
   }
 
   .section {

@@ -313,13 +313,22 @@ function createProductionLine(root) {
   });
 
   const productMat = new THREE.MeshStandardMaterial({
-    color: 0x0071e3,
-    emissive: 0x003366,
-    emissiveIntensity: 0.22,
+    color: 0xc49564,
+    roughness: 0.72,
+    metalness: 0.08,
   });
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0x7a5a3e, transparent: true, opacity: 0.6 });
+
   const products = [];
+  const boxEdgeGeo = createBoxEdgeGeometry(0.46, 0.28, 0.36);
   for (let i = 0; i < 8; i += 1) {
-    const product = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.28, 0.36), productMat);
+    const boxGeo = new THREE.BoxGeometry(0.46, 0.28, 0.36);
+    const body = new THREE.Mesh(boxGeo, productMat);
+    const edges = new THREE.LineSegments(boxEdgeGeo, edgeMat);
+
+    const product = new THREE.Group();
+    product.add(body);
+    product.add(edges);
     product.position.set(-5.4 + i * 1.55, 0.55, 0.55);
     product.userData.beltX = product.position.x;
     root.add(product);
@@ -368,6 +377,30 @@ function createDataLinks(root) {
     const points = [new THREE.Vector3(x, 1.42, -1.2), new THREE.Vector3(x, 1.42, 0.55)];
     root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
   }
+}
+
+function createBoxEdgeGeometry(w, h, d) {
+  const hw = w / 2, hh = h / 2, hd = d / 2;
+  const verts = new Float32Array([
+    // 底面 4 条棱
+    -hw, -hh, -hd,  hw, -hh, -hd,
+     hw, -hh, -hd,  hw, -hh,  hd,
+     hw, -hh,  hd, -hw, -hh,  hd,
+    -hw, -hh,  hd, -hw, -hh, -hd,
+    // 顶面 4 条棱
+    -hw,  hh, -hd,  hw,  hh, -hd,
+     hw,  hh, -hd,  hw,  hh,  hd,
+     hw,  hh,  hd, -hw,  hh,  hd,
+    -hw,  hh,  hd, -hw,  hh, -hd,
+    // 4 条竖棱
+    -hw, -hh, -hd, -hw,  hh, -hd,
+     hw, -hh, -hd,  hw,  hh, -hd,
+     hw, -hh,  hd,  hw,  hh,  hd,
+    -hw, -hh,  hd, -hw,  hh,  hd,
+  ]);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(verts, 3));
+  return geo;
 }
 
 function createHistory() {

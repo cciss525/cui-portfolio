@@ -238,6 +238,27 @@ h1 {
   font-weight: 750;
 }
 
+.hero-tech-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 720px;
+  margin-bottom: 28px;
+}
+
+.hero-tech-strip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(159, 203, 255, 0.32);
+  border-radius: 8px;
+  color: #9fcbff;
+  font-size: 13px;
+  font-weight: 650;
+  background: rgba(159, 203, 255, 0.08);
+}
+
 .hero-copy {
   max-width: 720px;
   margin-bottom: 34px;

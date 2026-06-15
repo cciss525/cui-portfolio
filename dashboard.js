@@ -117,7 +117,7 @@ function createFactoryScene(canvas, devices) {
   const selectable = [];
 
   createFactoryShell(root);
-  createProductionLine(root);
+  const { products } = createProductionLine(root);
   createDevices(root, devices, selectable);
   createDataLinks(root);
 
@@ -128,7 +128,15 @@ function createFactoryScene(canvas, devices) {
     camera.updateProjectionMatrix();
   }
 
+  const BELT_MIN = -6.2;
+  const BELT_MAX = 6.2;
+  const BELT_SPEED = 1.2; // 单位/秒
+  let lastTime = 0;
+
   function animate(time) {
+    const dt = lastTime ? (time - lastTime) * 0.001 : 0;
+    lastTime = time;
+
     root.position.y = Math.sin(time * 0.0008) * 0.035;
     selectable.forEach((mesh, index) => {
       const stateLight = mesh.userData.statusLight;
@@ -136,6 +144,18 @@ function createFactoryScene(canvas, devices) {
         stateLight.material.opacity = 0.52 + Math.sin(time * 0.003 + index) * 0.18;
       }
     });
+
+    // 传送带产品移动 & 无限循环
+    if (dt > 0 && dt < 1) {
+      products.forEach((product) => {
+        product.userData.beltX += BELT_SPEED * dt;
+        if (product.userData.beltX > BELT_MAX) {
+          product.userData.beltX -= (BELT_MAX - BELT_MIN);
+        }
+        product.position.x = product.userData.beltX;
+      });
+    }
+
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
@@ -297,11 +317,15 @@ function createProductionLine(root) {
     emissive: 0x003366,
     emissiveIntensity: 0.22,
   });
+  const products = [];
   for (let i = 0; i < 8; i += 1) {
     const product = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.28, 0.36), productMat);
     product.position.set(-5.4 + i * 1.55, 0.55, 0.55);
+    product.userData.beltX = product.position.x;
     root.add(product);
+    products.push(product);
   }
+  return { products };
 }
 
 function createDevices(root, devices, selectable) {
